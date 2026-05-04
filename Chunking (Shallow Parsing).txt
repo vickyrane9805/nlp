@@ -1,0 +1,32 @@
+import nltk
+
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
+
+sentence = "The quick brown fox jumps very quickly over the lazy dog"
+
+# Step 1: Tokenization
+tokens = nltk.word_tokenize(sentence)
+
+# Step 2: POS Tagging
+pos_tags = nltk.pos_tag(tokens)
+print("POS Tags:", pos_tags)
+
+# Step 3: Define Grammar
+grammar = r"""
+    NP: {<DT>?<JJ>*<NN>}
+    VP: {<VB.*><RB>?}
+    ADJP: {<JJ>+}
+    ADVP: {<RB>+}
+"""
+
+# Step 4: Chunking
+chunk_parser = nltk.RegexpParser(grammar)
+chunk_tree = chunk_parser.parse(pos_tags)
+
+# Step 5: Output
+print("\nChunk Tree:")
+print(chunk_tree)
+
+# Step 6: Draw Tree
+chunk_tree.draw()
