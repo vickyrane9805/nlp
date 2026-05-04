@@ -1,0 +1,44 @@
+def cyk_parser(sentence, grammar):
+    words = sentence.split()
+    n = len(words)
+
+    # Create empty table
+    table = [[set() for _ in range(n)] for _ in range(n)]
+
+    # Step 1: Fill diagonal (terminals)
+    for j in range(n):
+        for lhs in grammar:
+            for rhs in grammar[lhs]:
+                if rhs == words[j]:
+                    table[j][j].add(lhs)
+
+    # Step 2: Fill upper cells
+    for length in range(2, n + 1):  # span length
+        for i in range(n - length + 1):
+            j = i + length - 1
+
+            for k in range(i, j):
+                for lhs in grammar:
+                    for rhs in grammar[lhs]:
+                        if isinstance(rhs, tuple) and len(rhs) == 2:
+                            B, C = rhs
+
+                            if B in table[i][k] and C in table[k+1][j]:
+                                table[i][j].add(lhs)
+
+    return table
+
+sentence = "the dog chased the dog"
+
+table = cyk_parser(sentence, grammar)
+
+# Print CYK Table
+print("CYK Table:\n")
+for row in table:
+    print(row)
+
+# Final result
+if 'S' in table[0][len(sentence.split()) - 1]:
+    print("\nSentence is VALID according to grammar ✅")
+else:
+    print("\nSentence is NOT valid ❌")

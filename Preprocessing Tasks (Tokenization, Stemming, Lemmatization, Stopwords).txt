@@ -1,0 +1,33 @@
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer, WordNetLemmatizer
+import re
+
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('wordnet')
+
+text = "NLP is amazing! It helps computers understand human language."
+
+# Tokenization
+tokens = word_tokenize(text)
+print("Tokens:", tokens)
+
+# Stopword removal
+filtered = [w for w in tokens if w.lower() not in stopwords.words('english')]
+print("Stopwords removed:", filtered)
+
+# Stemming
+ps = PorterStemmer()
+stemmed = [ps.stem(w) for w in filtered]
+print("Stemmed:", stemmed)
+
+# Lemmatization
+lemmatizer = WordNetLemmatizer()
+lemmatized = [lemmatizer.lemmatize(w) for w in filtered]
+print("Lemmatized:", lemmatized)
+
+# Regex cleaning
+clean = re.sub(r'[^a-zA-Z\s]', '', text)
+print("Cleaned Text:", clean)

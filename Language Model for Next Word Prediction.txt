@@ -1,0 +1,30 @@
+import nltk
+from nltk.util import ngrams
+from collections import defaultdict, Counter
+
+nltk.download('punkt')
+
+text = "I love NLP and I love machine learning"
+
+# Step 1: Tokenize
+tokens = nltk.word_tokenize(text.lower())
+
+# Step 2: Create bigrams
+bigrams = list(ngrams(tokens, 2))
+
+# Step 3: Build model
+model = defaultdict(Counter)
+
+for w1, w2 in bigrams:
+    model[w1][w2] += 1
+
+# Step 4: Prediction function
+def predict_next_word(word):
+    if word in model:
+        return model[word].most_common(1)[0][0]
+    else:
+        return "No prediction"
+
+# Step 5: Test
+print("Next word after 'love':", predict_next_word("love"))
+print("Next word after 'machine':", predict_next_word("machine"))

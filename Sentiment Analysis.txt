@@ -1,0 +1,39 @@
+import nltk
+from nltk.sentiment import SentimentIntensityAnalyzer
+from nltk.tokenize import word_tokenize
+from textblob import TextBlob
+
+# Downloads
+nltk.download('punkt')
+nltk.download('vader_lexicon')
+
+text = "I absolutely love this product. It is very useful and amazing!"
+
+# Initialize analyzer
+sia = SentimentIntensityAnalyzer()
+
+# --- Single Word Sentiment ---
+print("=== Single Word Sentiment ===")
+tokens = word_tokenize(text)
+
+for word in tokens:
+    print(word, "->", sia.polarity_scores(word))
+
+# --- Multi-word Sentiment ---
+print("\n=== Sentence Level Sentiment ===")
+print(sia.polarity_scores(text))
+
+# --- Polarity-Based Sentiment ---
+print("\n=== Polarity-Based Sentiment ===")
+
+blob = TextBlob(text)
+polarity = blob.sentiment.polarity
+
+print("Polarity:", polarity)
+
+if polarity > 0:
+    print("Positive")
+elif polarity < 0:
+    print("Negative")
+else:
+    print("Neutral")
